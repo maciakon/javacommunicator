@@ -1,4 +1,6 @@
 package server;
 
-public class ServerController {
+public class ServerController
+{
+
 }
