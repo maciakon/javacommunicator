@@ -9,7 +9,6 @@ import shared.PortValidator;
 
 public class ServerController
 {
-
     @FXML
     private Button stopButton, startButton;
     @FXML
