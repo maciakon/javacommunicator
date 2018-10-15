@@ -7,6 +7,9 @@ import shared.DialogManager;
 import shared.IPortValidator;
 import shared.PortValidator;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 public class ServerController
 {
     @FXML
@@ -20,14 +23,16 @@ public class ServerController
     public ServerController()
     {
         _portNumberValidator = new PortValidator();
-        _server = new JavaCommunicatorServer();
+
     }
 
-    public void startButtonClicked()
+    public void startButtonClicked() throws IOException
     {
-        if(_portNumberValidator.ValidatePortNumber(portNumberText.getText()))
+        var portNumber = _portNumberValidator.GetPortNumberFromString(portNumberText.getText());
+        if(portNumber > 0)
         {
             SetStartStopButtonsStates(true);
+            _server = new JavaCommunicatorServer(new ServerSocket(portNumber));
             _server.Start();
         }
         else

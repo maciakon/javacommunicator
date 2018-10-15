@@ -2,15 +2,15 @@ package shared;
 
 public class PortValidator implements IPortValidator
 {
-    public boolean ValidatePortNumber(String portNumberText) {
+    public int GetPortNumberFromString(String portNumberText)
+    {
         try
         {
-            Integer.parseInt(portNumberText);
-            return true;
+            return Integer.parseInt(portNumberText);
         }
         catch (Exception exc)
         {
-            return false;
+            return -1;
         }
     }
 }
