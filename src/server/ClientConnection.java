@@ -1,27 +1,64 @@
 package server;
 
+import shared.Message;
 
+import java.io.*;
 import java.net.Socket;
 
 public class ClientConnection implements Runnable
 {
-    private Socket _socket;
+    private final Socket _socket;
+    private JavaCommunicatorServer _server;
+    private ObjectInputStream _inputStream;
+    private ObjectOutputStream _outputStream;
 
-
-    ClientConnection(Socket socket)
+    ClientConnection(Socket socket, JavaCommunicatorServer javaCommunicatorServer)
     {
         _socket = socket;
+        _server = javaCommunicatorServer;
     }
 
     @Override
     public void run()
     {
-        // serve for client request
-        // until connection close
+        Receive();
+    }
 
+    void OpenStreams()
+    {
+        try
+        {
+            _outputStream  = new ObjectOutputStream(_socket.getOutputStream());
+            _inputStream = new ObjectInputStream(_socket.getInputStream());
+        }
+        catch (IOException e)
+        {
+            _server.Disconnect(this);
+        }
+    }
 
-        // client says hi
-        // gets added to server list
-        // the list gets propagated to all of the clients
+    public void Send(Message message)
+    {
+        try
+        {
+            _outputStream.writeObject(message);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void Receive()
+    {
+        try
+        {
+            var message = (Message)_inputStream.readObject();
+            _server.Handle(message);
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

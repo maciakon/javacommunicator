@@ -1,16 +1,22 @@
 package server;
 
+import shared.Message;
+
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaCommunicatorServer implements IJavaCommunicatorServer
 {
     private ServerSocket _serverSocket;
     private Thread _runningThread;
+    private List<ClientConnection> _connectedClients;
 
     JavaCommunicatorServer(ServerSocket serverSocket)
     {
         _serverSocket = serverSocket;
+        _connectedClients = new ArrayList<>();
     }
 
     public void Start()
@@ -35,6 +41,18 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         }
     }
 
+    @Override
+    public void Handle(Message message)
+    {
+
+    }
+
+    @Override
+    public void Disconnect(ClientConnection clientConnection)
+    {
+        _connectedClients.remove(clientConnection);
+    }
+
     private void run()
     {
         while(true)
@@ -42,7 +60,8 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
             try
             {
                 var socket = _serverSocket.accept();
-                new ClientConnection(socket).run();
+                var connectedClient = new ClientConnection(socket, this);
+                EstablishConnection(connectedClient);
             }
             catch (IOException e)
             {
@@ -50,5 +69,12 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
                 break;
             }
         }
+    }
+
+    private void EstablishConnection(ClientConnection connectedClient)
+    {
+        _connectedClients.add(connectedClient);
+        connectedClient.OpenStreams();
+        connectedClient.run();
     }
 }
