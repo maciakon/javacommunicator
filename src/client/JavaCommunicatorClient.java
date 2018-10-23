@@ -1,6 +1,6 @@
 package client;
 
-import shared.Message;
+import shared.Packet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,8 +15,8 @@ public class JavaCommunicatorClient
     private Socket _socket = null;
     private Thread _sendingThread;
     private Thread _receivingThread;
-    private CopyOnWriteArrayList<Message> _messagesToSend;
-    private CopyOnWriteArrayList<Message> _receivedMessages = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Packet> _messagesToSend;
+    private CopyOnWriteArrayList<Packet> _receivedPackets = new CopyOnWriteArrayList<>();
 
     public JavaCommunicatorClient(String host, int portNumber)
     {
@@ -59,17 +59,17 @@ public class JavaCommunicatorClient
         }
     }
 
-    public void Send(Message message)
+    public void Send(Packet packet)
     {
-        _messagesToSend.add(message);
+        _messagesToSend.add(packet);
     }
 
-    public Message Receive()
+    public Packet Receive()
     {
-        if(!_receivedMessages.isEmpty())
+        if(!_receivedPackets.isEmpty())
         {
-            var message = _receivedMessages.stream().findFirst().orElse(null);
-            _receivedMessages.remove(message);
+            var message = _receivedPackets.stream().findFirst().orElse(null);
+            _receivedPackets.remove(message);
             return  message;
         }
         return null;
@@ -82,26 +82,24 @@ public class JavaCommunicatorClient
             if (!_messagesToSend.isEmpty())
             {
                 var messageToSend = _messagesToSend.stream().findFirst().orElse(null);
-                if(messageToSend != null)
-                {
-                    _messagesToSend.remove(messageToSend);
-                    try
-                    {
-                        _objectOutputStream.writeObject(messageToSend);
-                        _objectOutputStream.flush();
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
+                _messagesToSend.remove(messageToSend);
                 try
                 {
-                    _sendingThread.sleep(200);
+                    _objectOutputStream.writeObject(messageToSend);
+                    _objectOutputStream.flush();
                 }
-                catch (InterruptedException e)
+                catch (IOException e)
                 {
                     e.printStackTrace();
                 }
+            }
+            try
+            {
+                _sendingThread.sleep(200);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
             }
         }
         return;
@@ -113,7 +111,7 @@ public class JavaCommunicatorClient
         {
             try
             {
-                _receivedMessages.add((Message)_objectInputStream.readObject());
+                _receivedPackets.add((Packet)_objectInputStream.readObject());
             }
             catch (IOException e)
             {

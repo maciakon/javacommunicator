@@ -1,13 +1,15 @@
 package server;
 
-import shared.Message;
+import shared.Packet;
 
 public interface IJavaCommunicatorServer
 {
     void Start();
     void Stop();
 
-    void Handle(Message message);
+    void Handle(int localPort, Packet packet);
 
     void Disconnect(ClientConnection clientConnection);
+
+    void AddClientId(int clientId, String name);
 }

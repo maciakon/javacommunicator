@@ -1,22 +1,31 @@
 package server;
 
-import shared.Message;
+import javafx.collections.FXCollections;
+import shared.ContactsListUpdatedMessage;
+import shared.IHandlerFactory;
+import shared.Packet;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JavaCommunicatorServer implements IJavaCommunicatorServer
 {
+    private final ServerMessageHandlersFactory _handlersFactory;
     private ServerSocket _serverSocket;
     private Thread _runningThread;
-    private List<ClientConnection> _connectedClients;
+    private static List<ClientConnection> _connectedClients;
+    private static Map<Integer, String> _clientNames;
 
     JavaCommunicatorServer(ServerSocket serverSocket)
     {
         _serverSocket = serverSocket;
         _connectedClients = new ArrayList<>();
+        _clientNames = new HashMap<>();
+        _handlersFactory = new ServerMessageHandlersFactory(this);
     }
 
     public void Start()
@@ -42,15 +51,28 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     }
 
     @Override
-    public void Handle(Message message)
+    public void Handle(int clientId, Packet packet)
     {
-
+        var handler = _handlersFactory.Get(packet);
+        handler.Handle(clientId, packet.get_message());
     }
 
     @Override
     public void Disconnect(ClientConnection clientConnection)
     {
         _connectedClients.remove(clientConnection);
+    }
+
+    @Override
+    public void AddClientId(int localPort, String name)
+    {
+        _clientNames.put(localPort, name);
+        for (ClientConnection singleClient: _connectedClients)
+        {
+            var contactsUpdatedMessage = new ContactsListUpdatedMessage(FXCollections.observableArrayList());
+            var packet = new Packet(0, 0, contactsUpdatedMessage);
+            singleClient.Send(packet);
+        }
     }
 
     private void run()
@@ -75,6 +97,8 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     {
         _connectedClients.add(connectedClient);
         connectedClient.OpenStreams();
-        connectedClient.run();
+
+        new Thread(connectedClient).start();
+
     }
 }

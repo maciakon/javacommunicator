@@ -1,8 +1,10 @@
 package server;
 
-import shared.Message;
+import shared.Packet;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientConnection implements Runnable
@@ -37,11 +39,11 @@ public class ClientConnection implements Runnable
         }
     }
 
-    public void Send(Message message)
+    public void Send(Packet packet)
     {
         try
         {
-            _outputStream.writeObject(message);
+            _outputStream.writeObject(packet);
         }
         catch (IOException e)
         {
@@ -51,14 +53,22 @@ public class ClientConnection implements Runnable
 
     public void Receive()
     {
-        try
+        while(!Thread.interrupted())
         {
-            var message = (Message)_inputStream.readObject();
-            _server.Handle(message);
+            try
+            {
+                var message = (Packet) _inputStream.readObject();
+                _server.Handle(_socket.getPort(), message);
 
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public int get_Id()
+    {
+        return _socket.getLocalPort();
     }
 }
