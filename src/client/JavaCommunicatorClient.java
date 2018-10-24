@@ -1,5 +1,6 @@
 package client;
 
+import shared.HandShakeMessage;
 import shared.Packet;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 public class JavaCommunicatorClient
 {
@@ -17,6 +19,7 @@ public class JavaCommunicatorClient
     private Thread _receivingThread;
     private CopyOnWriteArrayList<Packet> _messagesToSend;
     private CopyOnWriteArrayList<Packet> _receivedPackets = new CopyOnWriteArrayList<>();
+    private static CountDownLatch _latch = new CountDownLatch(1);
 
     public JavaCommunicatorClient(String host, int portNumber)
     {
@@ -77,6 +80,16 @@ public class JavaCommunicatorClient
 
     private void SendingLoop()
     {
+        try
+        {
+            Thread.sleep(500);
+            _latch.await();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        SendHandshake();
         while(!_sendingThread.isInterrupted())
         {
             if (!_messagesToSend.isEmpty())
@@ -111,7 +124,9 @@ public class JavaCommunicatorClient
         {
             try
             {
-                _receivedPackets.add((Packet)_objectInputStream.readObject());
+                _latch.countDown();
+                var objectRead = _objectInputStream.readObject();
+                _receivedPackets.add((Packet)objectRead);
             }
             catch (IOException e)
             {
@@ -125,5 +140,11 @@ public class JavaCommunicatorClient
         return;
     }
 
-
+    public void SendHandshake()
+    {
+        var handShakeMessage = new HandShakeMessage();
+        handShakeMessage.Name = "TestName";
+        var packet = new Packet(0, 0, handShakeMessage);
+        Send(packet);
+    }
 }

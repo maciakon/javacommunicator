@@ -1,18 +1,18 @@
 package shared;
-import javafx.collections.ObservableList;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class ContactsListUpdatedMessage implements Serializable
 {
-    private ObservableList<String> contacts;
+    private Map<Integer, String> contacts;
 
-    public ContactsListUpdatedMessage(ObservableList<String> contacts)
+    public ContactsListUpdatedMessage(Map<Integer, String> contacts)
     {
         this.contacts = contacts;
     }
 
-    public ObservableList<String> getContacts()
+    public Map<Integer, String> getContacts()
     {
         return contacts;
     }

@@ -69,7 +69,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         _clientNames.put(localPort, name);
         for (ClientConnection singleClient: _connectedClients)
         {
-            var contactsUpdatedMessage = new ContactsListUpdatedMessage(FXCollections.observableArrayList());
+            var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);
             var packet = new Packet(0, 0, contactsUpdatedMessage);
             singleClient.Send(packet);
         }

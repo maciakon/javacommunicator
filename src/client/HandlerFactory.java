@@ -1,6 +1,7 @@
 package client;
 
 import javafx.scene.control.ListView;
+import shared.ContactsListUpdatedMessage;
 import shared.IHandle;
 import shared.Packet;
 import java.lang.reflect.Type;
@@ -20,12 +21,12 @@ public class HandlerFactory implements shared.IHandlerFactory
 
     private void RegisterHandlers()
     {
-        _handlers.put(ContactsListUpdatedHandler.class, new ContactsListUpdatedHandler(_contactsList));
+        _handlers.put(ContactsListUpdatedMessage.class, new ContactsListUpdatedHandler(_contactsList));
     }
 
     @Override
     public IHandle Get(Packet packet)
     {
-        return _handlers.get(packet.getClass());
+        return _handlers.get(packet.get_message().getClass());
     }
 }

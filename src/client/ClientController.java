@@ -4,14 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import shared.HandShakeMessage;
-import shared.IHandle;
 import shared.Packet;
 
 public class ClientController
 {
     private final JavaCommunicatorClient _javaCommunicatorClient;
     private final Thread _readingThread;
+
     @FXML
     ListView contactsList;
     @FXML
@@ -19,7 +18,6 @@ public class ClientController
 
     int _portNumber = 4441;
     String _host = "localhost";
-    private IHandle handler;
 
     public ClientController()
     {
@@ -27,7 +25,6 @@ public class ClientController
         _javaCommunicatorClient.Start();
         _readingThread = new Thread(this::ShowReceivedMessages);
         _readingThread.start();
-        SendHandshake();
     }
 
     private void ShowReceivedMessages()
@@ -35,14 +32,12 @@ public class ClientController
         while(!_readingThread.isInterrupted())
         {
             var packet = _javaCommunicatorClient.Receive();
-            var handlerFactory = new HandlerFactory(contactsList);
-            handlerFactory.Get(packet).Handle(packet.get_message());
-
-            handler.Handle(packet.get_message());
 
             if (packet != null)
             {
-
+                var handlerFactory = new HandlerFactory(contactsList);
+                var messageHandler = handlerFactory.Get(packet);
+                messageHandler.Handle(packet.get_message());
             }
             try
             {
@@ -60,11 +55,5 @@ public class ClientController
         _javaCommunicatorClient.Send(message);
     }
 
-    private void SendHandshake()
-    {
-        var handShakeMessage = new HandShakeMessage();
-        handShakeMessage.Name = "TestName";
-        var packet = new Packet(0, 0, handShakeMessage);
-        _javaCommunicatorClient.Send(packet);
-    }
+
 }

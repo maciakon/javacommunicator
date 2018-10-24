@@ -1,5 +1,6 @@
 package client;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import shared.ContactsListUpdatedMessage;
 import shared.IHandle;
@@ -16,6 +17,6 @@ public class ContactsListUpdatedHandler implements IHandle<ContactsListUpdatedMe
     @Override
     public void Handle(ContactsListUpdatedMessage message)
     {
-        _contactsList.setItems(message.getContacts());
+        _contactsList.setItems(FXCollections.observableArrayList(message.getContacts().values()));
     }
 }
