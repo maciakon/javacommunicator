@@ -1,4 +1,4 @@
-package client;
+package client.mainWindow;
 
 import shared.HandShakeMessage;
 import shared.Packet;

@@ -1,4 +1,4 @@
-package client;
+package client.mainWindow;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;

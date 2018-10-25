@@ -1,5 +1,6 @@
 package client;
 
+import client.login.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        var fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+        var fxmlLoader = new FXMLLoader(getClass().getResource("./login/login.fxml"));
         Parent root = fxmlLoader.load();
         var loginController = fxmlLoader.getController();
         ((LoginController)loginController).setStage(primaryStage);

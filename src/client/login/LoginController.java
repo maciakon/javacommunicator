@@ -1,4 +1,4 @@
-package client;
+package client.login;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class LoginController
 
     public void ConnectToServer(ActionEvent actionEvent) throws Exception
     {
-        var fxmlLoader = new FXMLLoader(getClass().getResource("client.fxml"));
+        var fxmlLoader = new FXMLLoader(getClass().getResource("../mainWindow/client.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         _primaryStage.setScene(scene);

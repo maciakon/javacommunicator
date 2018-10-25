@@ -1,4 +1,4 @@
-package client;
+package client.mainWindow;
 
 import javafx.scene.control.ListView;
 import shared.ContactsListUpdatedMessage;
