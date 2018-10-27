@@ -20,9 +20,11 @@ public class JavaCommunicatorClient
     private CopyOnWriteArrayList<Packet> _messagesToSend;
     private CopyOnWriteArrayList<Packet> _receivedPackets = new CopyOnWriteArrayList<>();
     private static CountDownLatch _latch = new CountDownLatch(1);
+    private String _login;
 
-    public JavaCommunicatorClient(String host, int portNumber)
+    public JavaCommunicatorClient(String host, int portNumber, String login)
     {
+        _login = login;
         try
         {
             _socket = new Socket(host, portNumber);
@@ -143,7 +145,7 @@ public class JavaCommunicatorClient
     public void SendHandshake()
     {
         var handShakeMessage = new HandShakeMessage();
-        handShakeMessage.Name = "TestName";
+        handShakeMessage.Name = _login;
         var packet = new Packet(0, 0, handShakeMessage);
         Send(packet);
     }

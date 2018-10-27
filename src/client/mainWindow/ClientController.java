@@ -8,8 +8,8 @@ import shared.Packet;
 
 public class ClientController
 {
-    private final JavaCommunicatorClient _javaCommunicatorClient;
-    private final Thread _readingThread;
+    private JavaCommunicatorClient _javaCommunicatorClient;
+    private Thread _readingThread;
 
     @FXML
     ListView contactsList;
@@ -18,14 +18,10 @@ public class ClientController
 
     private int _portNumber = 4441;
     private String _host = "localhost";
-    private String _login;
 
     public ClientController()
     {
-        _javaCommunicatorClient = new JavaCommunicatorClient(_host, _portNumber);
-        _javaCommunicatorClient.Start();
-        _readingThread = new Thread(this::ShowReceivedMessages);
-        _readingThread.start();
+
     }
 
     private void ShowReceivedMessages()
@@ -43,7 +39,8 @@ public class ClientController
             try
             {
                 _readingThread.sleep(200);
-            } catch (InterruptedException e)
+            }
+            catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
@@ -59,6 +56,9 @@ public class ClientController
 
     public void setLogin(String login)
     {
-        _login = login;
+        _javaCommunicatorClient = new JavaCommunicatorClient(_host, _portNumber, login);
+        _javaCommunicatorClient.Start();
+        _readingThread = new Thread(this::ShowReceivedMessages);
+        _readingThread.start();
     }
 }
