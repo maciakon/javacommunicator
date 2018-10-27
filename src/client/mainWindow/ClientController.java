@@ -16,8 +16,9 @@ public class ClientController
     @FXML
     TextArea messageList;
 
-    int _portNumber = 4441;
-    String _host = "localhost";
+    private int _portNumber = 4441;
+    private String _host = "localhost";
+    private String _login;
 
     public ClientController()
     {
@@ -46,6 +47,7 @@ public class ClientController
             {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -55,5 +57,8 @@ public class ClientController
         _javaCommunicatorClient.Send(message);
     }
 
-
+    public void setLogin(String login)
+    {
+        _login = login;
+    }
 }
