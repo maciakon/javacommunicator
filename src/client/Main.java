@@ -18,7 +18,7 @@ public class Main extends Application
         ((LoginController)loginController).setStage(primaryStage);
         primaryStage.setTitle("JavaCommunicator");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

@@ -2,12 +2,10 @@ package client.mainWindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import shared.Packet;
 
 public class ClientController
@@ -54,12 +52,6 @@ public class ClientController
         }
     }
 
-    public void SendMessageClicked(ActionEvent actionEvent)
-    {
-        var message = new Packet(0, 0, "hello");
-        _javaCommunicatorClient.Send(message);
-    }
-
     public void setLogin(String login)
     {
         _javaCommunicatorClient = new JavaCommunicatorClient(_host, _portNumber, login);
@@ -76,6 +68,15 @@ public class ClientController
                 String item = (String)contactsList.getSelectionModel().getSelectedItem();
                 var tab = new Tab();
                 tab.setText(item);
+
+                var borderPane = new BorderPane();
+                var messagesTextArea = new TextArea();
+                messagesTextArea.setEditable(false);
+                var messageToSendTextField = new TextField();
+
+                borderPane.setCenter(messagesTextArea);
+                borderPane.setBottom(messageToSendTextField);
+                tab.setContent(borderPane);
                 conversationTabPane.getTabs().add(tab);
             }
         }
