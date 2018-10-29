@@ -2,10 +2,14 @@ package client.mainWindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import shared.Packet;
 
 public class ClientController
@@ -70,12 +74,20 @@ public class ClientController
                 tab.setText(item);
 
                 var borderPane = new BorderPane();
+
                 var messagesTextArea = new TextArea();
                 messagesTextArea.setEditable(false);
                 var messageToSendTextField = new TextField();
+                var sendButton = new Button("Send");
+                var sendMessageHBox = new HBox();
+                HBox.setHgrow(messageToSendTextField, Priority.ALWAYS);
+                sendMessageHBox.getChildren().addAll(messageToSendTextField, sendButton);
+                sendMessageHBox.setPadding(new Insets(10, 0, 0 ,0));
+                sendMessageHBox.setSpacing(10);
 
                 borderPane.setCenter(messagesTextArea);
-                borderPane.setBottom(messageToSendTextField);
+                borderPane.setBottom(sendMessageHBox);
+
                 tab.setContent(borderPane);
                 conversationTabPane.getTabs().add(tab);
             }
