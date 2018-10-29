@@ -18,7 +18,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     private ServerSocket _serverSocket;
     private Thread _runningThread;
     private static List<ClientConnection> _connectedClients;
-    private static Map<Integer, String> _clientNames;
+    private HashMap<Integer, String> _clientNames;
 
     JavaCommunicatorServer(ServerSocket serverSocket)
     {

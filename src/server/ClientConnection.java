@@ -44,6 +44,8 @@ public class ClientConnection implements Runnable
         try
         {
             _outputStream.writeObject(packet);
+            _outputStream.flush();
+            _outputStream.reset();
         }
         catch (IOException e)
         {

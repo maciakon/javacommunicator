@@ -3,7 +3,11 @@ package client.mainWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import shared.Packet;
 
 public class ClientController
@@ -15,6 +19,8 @@ public class ClientController
     ListView contactsList;
     @FXML
     TextArea messageList;
+    @FXML
+    TabPane conversationTabPane;
 
     private int _portNumber = 4441;
     private String _host = "localhost";
@@ -38,7 +44,7 @@ public class ClientController
             }
             try
             {
-                _readingThread.sleep(200);
+                Thread.sleep(200);
             }
             catch (InterruptedException e)
             {
@@ -60,5 +66,18 @@ public class ClientController
         _javaCommunicatorClient.Start();
         _readingThread = new Thread(this::ShowReceivedMessages);
         _readingThread.start();
+    }
+
+    public void ListViewMouseClicked(MouseEvent mouseEvent)
+    {
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
+        {
+            if (mouseEvent.getClickCount() == 2) {
+                String item = (String)contactsList.getSelectionModel().getSelectedItem();
+                var tab = new Tab();
+                tab.setText(item);
+                conversationTabPane.getTabs().add(tab);
+            }
+        }
     }
 }

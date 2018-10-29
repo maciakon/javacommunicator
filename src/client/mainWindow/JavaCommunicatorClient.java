@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
@@ -21,12 +23,14 @@ public class JavaCommunicatorClient
     private CopyOnWriteArrayList<Packet> _receivedPackets = new CopyOnWriteArrayList<>();
     private static CountDownLatch _latch = new CountDownLatch(1);
     private String _login;
+    private BlockingQueue<Packet> _receivedPacks;
 
     public JavaCommunicatorClient(String host, int portNumber, String login)
     {
         _login = login;
         try
         {
+            _receivedPacks = new ArrayBlockingQueue<>(100);
             _socket = new Socket(host, portNumber);
             _objectOutputStream = new ObjectOutputStream(_socket.getOutputStream());
             _objectInputStream = new ObjectInputStream(_socket.getInputStream());
@@ -71,13 +75,15 @@ public class JavaCommunicatorClient
 
     public Packet Receive()
     {
-        if(!_receivedPackets.isEmpty())
-        {
-            var message = _receivedPackets.stream().findFirst().orElse(null);
-            _receivedPackets.remove(message);
-            return  message;
-        }
-        return null;
+            try
+            {
+                return _receivedPacks.take();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+                return null;
+            }
     }
 
     private void SendingLoop()
@@ -102,6 +108,7 @@ public class JavaCommunicatorClient
                 {
                     _objectOutputStream.writeObject(messageToSend);
                     _objectOutputStream.flush();
+                    _objectOutputStream.reset();
                 }
                 catch (IOException e)
                 {
@@ -128,7 +135,8 @@ public class JavaCommunicatorClient
             {
                 _latch.countDown();
                 var objectRead = _objectInputStream.readObject();
-                _receivedPackets.add((Packet)objectRead);
+               // _receivedPackets.add((Packet)objectRead);
+                _receivedPacks.add((Packet)objectRead);
             }
             catch (IOException e)
             {

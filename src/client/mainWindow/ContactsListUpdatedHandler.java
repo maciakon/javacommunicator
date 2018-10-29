@@ -17,6 +17,7 @@ public class ContactsListUpdatedHandler implements IHandle<ContactsListUpdatedMe
     @Override
     public void Handle(ContactsListUpdatedMessage message)
     {
+        var cts = message.getContacts();
         _contactsList.setItems(FXCollections.observableArrayList(message.getContacts().values()));
     }
 }
