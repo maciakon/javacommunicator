@@ -2,5 +2,5 @@ package server;
 
 public interface IServerMessageHandler<T>
 {
-    void Handle(int clientId, T message);
+    void Handle(int senderId, int receiverId, T message);
 }

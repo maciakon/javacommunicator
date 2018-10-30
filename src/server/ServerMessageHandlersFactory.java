@@ -2,6 +2,7 @@ package server;
 
 import shared.HandShakeMessage;
 import shared.Packet;
+import shared.TextMessage;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class ServerMessageHandlersFactory
     private void RegisterHandlers()
     {
         _handlers.put(HandShakeMessage.class, new HandshakeMessageHandler(_javaCommunicatorServer));
+        _handlers.put(TextMessage.class, new TextMessageHandler(_javaCommunicatorServer));
     }
 
     public IServerMessageHandler Get(Packet packet)

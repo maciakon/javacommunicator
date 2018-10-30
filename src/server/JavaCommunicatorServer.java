@@ -54,7 +54,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     public void Handle(int clientId, Packet packet)
     {
         var handler = _handlersFactory.Get(packet);
-        handler.Handle(clientId, packet.get_message());
+        handler.Handle(clientId, packet.get_recipientId(), packet.get_message());
     }
 
     @Override

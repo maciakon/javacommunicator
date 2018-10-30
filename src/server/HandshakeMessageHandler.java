@@ -12,8 +12,8 @@ public class HandshakeMessageHandler implements IServerMessageHandler<HandShakeM
     }
 
     @Override
-    public void Handle(int clientId, HandShakeMessage handshake)
+    public void Handle(int senderId, int receiverId, HandShakeMessage handshake)
     {
-        _server.AddClientId(clientId, handshake.Name);
+        _server.AddClientId(senderId, handshake.Name);
     }
 }
