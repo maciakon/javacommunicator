@@ -70,13 +70,13 @@ public class ClientController
     {
         while(!_readingThread.isInterrupted())
         {
-            var packet = _javaCommunicatorClient.Receive();
+            var message = _javaCommunicatorClient.Receive();
 
-            if (packet != null)
+            if (message != null)
             {
                 var handlerFactory = new HandlerFactory(contactsList);
-                var messageHandler = handlerFactory.Get(packet);
-                messageHandler.Handle(packet.get_message());
+                var messageHandler = handlerFactory.Get(message);
+                messageHandler.Handle(message);
             }
             try
             {
@@ -88,6 +88,8 @@ public class ClientController
             }
         }
     }
+
+
 
     private void SendButtonClicked(ActionEvent actionEvent)
     {

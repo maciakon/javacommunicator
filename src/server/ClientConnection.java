@@ -1,6 +1,6 @@
 package server;
 
-import shared.Packet;
+import shared.messages.IMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,7 +39,7 @@ public class ClientConnection implements Runnable
         }
     }
 
-    public void Send(Packet packet)
+    public void Send(IMessage packet)
     {
         try
         {
@@ -59,7 +59,8 @@ public class ClientConnection implements Runnable
         {
             try
             {
-                var message = (Packet) _inputStream.readObject();
+                var message = (IMessage) _inputStream.readObject();
+                message.SetSender(_socket.getPort());
                 _server.Handle(_socket.getPort(), message);
 
             } catch (Exception e)

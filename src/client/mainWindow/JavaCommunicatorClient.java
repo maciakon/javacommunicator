@@ -1,7 +1,7 @@
 package client.mainWindow;
 
-import shared.HandShakeMessage;
-import shared.Packet;
+import shared.messages.HandShakeMessage;
+import shared.messages.IMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,11 +19,11 @@ public class JavaCommunicatorClient
     private Socket _socket = null;
     private Thread _sendingThread;
     private Thread _receivingThread;
-    private CopyOnWriteArrayList<Packet> _messagesToSend;
-    private CopyOnWriteArrayList<Packet> _receivedPackets = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<IMessage> _messagesToSend;
+    private CopyOnWriteArrayList<IMessage> _receivedPackets = new CopyOnWriteArrayList<>();
     private static CountDownLatch _latch = new CountDownLatch(1);
     private String _login;
-    private BlockingQueue<Packet> _receivedPacks;
+    private BlockingQueue<IMessage> _receivedPacks;
 
     public JavaCommunicatorClient(String host, int portNumber, String login)
     {
@@ -68,12 +68,12 @@ public class JavaCommunicatorClient
         }
     }
 
-    public void Send(Packet packet)
+    public void Send(IMessage message)
     {
-        _messagesToSend.add(packet);
+        _messagesToSend.add(message);
     }
 
-    public Packet Receive()
+    public IMessage Receive()
     {
             try
             {
@@ -135,8 +135,7 @@ public class JavaCommunicatorClient
             {
                 _latch.countDown();
                 var objectRead = _objectInputStream.readObject();
-               // _receivedPackets.add((Packet)objectRead);
-                _receivedPacks.add((Packet)objectRead);
+                _receivedPacks.add((IMessage) objectRead);
             }
             catch (IOException e)
             {
@@ -154,7 +153,6 @@ public class JavaCommunicatorClient
     {
         var handShakeMessage = new HandShakeMessage();
         handShakeMessage.Name = _login;
-        var packet = new Packet(0, 0, handShakeMessage);
-        Send(packet);
+        Send(handShakeMessage);
     }
 }

@@ -1,10 +1,8 @@
-package shared;
+package shared.messages;
 
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
-public class ContactsListUpdatedMessage implements Serializable
+public class ContactsListUpdatedMessage extends MessageBase
 {
     private HashMap<Integer, String> contacts;
 
@@ -17,4 +15,5 @@ public class ContactsListUpdatedMessage implements Serializable
     {
         return contacts;
     }
+
 }

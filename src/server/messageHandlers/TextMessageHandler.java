@@ -1,8 +1,10 @@
-package server;
+package server.messageHandlers;
 
-import shared.TextMessage;
+import server.IJavaCommunicatorServer;
+import shared.IHandle;
+import shared.messages.TextMessage;
 
-public class TextMessageHandler implements IServerMessageHandler<TextMessage>
+public class TextMessageHandler implements IHandle<TextMessage>
 {
     private IJavaCommunicatorServer javaCommunicatorServer;
 
@@ -12,7 +14,7 @@ public class TextMessageHandler implements IServerMessageHandler<TextMessage>
     }
 
     @Override
-    public void Handle(int senderId, int receiverId, TextMessage message)
+    public void Handle(TextMessage type)
     {
 
     }

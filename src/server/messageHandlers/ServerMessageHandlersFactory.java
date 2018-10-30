@@ -1,16 +1,18 @@
-package server;
+package server.messageHandlers;
 
-import shared.HandShakeMessage;
-import shared.Packet;
-import shared.TextMessage;
+import server.JavaCommunicatorServer;
+import shared.*;
+import shared.messages.HandShakeMessage;
+import shared.messages.IMessage;
+import shared.messages.TextMessage;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerMessageHandlersFactory
+public class ServerMessageHandlersFactory implements IHandlerFactory
 {
-    Map<Type, IServerMessageHandler> _handlers = new HashMap<>();
+    private Map<Type, IHandle> _handlers = new HashMap<>();
     private JavaCommunicatorServer _javaCommunicatorServer;
 
     public ServerMessageHandlersFactory(JavaCommunicatorServer javaCommunicatorServer)
@@ -25,8 +27,8 @@ public class ServerMessageHandlersFactory
         _handlers.put(TextMessage.class, new TextMessageHandler(_javaCommunicatorServer));
     }
 
-    public IServerMessageHandler Get(Packet packet)
+    public IHandle Get(IMessage message)
     {
-        return _handlers.get(packet.get_message().getClass());
+        return _handlers.get(message.getClass());
     }
 }

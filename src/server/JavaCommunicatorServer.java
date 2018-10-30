@@ -1,16 +1,14 @@
 package server;
 
-import javafx.collections.FXCollections;
-import shared.ContactsListUpdatedMessage;
-import shared.IHandlerFactory;
-import shared.Packet;
+import server.messageHandlers.ServerMessageHandlersFactory;
+import shared.messages.ContactsListUpdatedMessage;
+import shared.messages.IMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class JavaCommunicatorServer implements IJavaCommunicatorServer
 {
@@ -51,11 +49,13 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     }
 
     @Override
-    public void Handle(int clientId, Packet packet)
+    public void Handle(int clientId, IMessage message)
     {
-        var handler = _handlersFactory.Get(packet);
-        handler.Handle(clientId, packet.get_recipientId(), packet.get_message());
+        var handler = _handlersFactory.Get(message);
+        // handler.Handle(clientId, packet.get_recipientId(), packet.get_message());
+        handler.Handle(message);
     }
+
 
     @Override
     public void Disconnect(ClientConnection clientConnection)
@@ -70,8 +70,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         for (ClientConnection singleClient: _connectedClients)
         {
             var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);
-            var packet = new Packet(0, 0, contactsUpdatedMessage);
-            singleClient.Send(packet);
+            singleClient.Send(contactsUpdatedMessage);
         }
     }
 
@@ -101,4 +100,6 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         new Thread(connectedClient).start();
 
     }
+
+
 }

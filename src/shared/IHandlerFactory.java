@@ -1,6 +1,8 @@
 package shared;
 
+import shared.messages.IMessage;
+
 public interface IHandlerFactory
 {
-    IHandle Get(Packet packet);
+    IHandle Get(IMessage message);
 }
