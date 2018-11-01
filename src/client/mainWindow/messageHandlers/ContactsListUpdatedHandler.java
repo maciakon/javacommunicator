@@ -1,4 +1,4 @@
-package client.mainWindow;
+package client.mainWindow.messageHandlers;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;

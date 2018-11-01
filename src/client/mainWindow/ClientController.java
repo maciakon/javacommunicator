@@ -1,7 +1,9 @@
 package client.mainWindow;
 
+import client.mainWindow.messageHandlers.ClientHandlerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -9,6 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+
+import java.io.IOException;
 
 public class ClientController
 {
@@ -37,17 +41,34 @@ public class ClientController
         {
             if (mouseEvent.getClickCount() == 2)
             {
-                String item = (String)contactsList.getSelectionModel().getSelectedItem();
+                var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
+                try
+                {
+                    var root = fxmlLoader.load();
+                    conversationTabPane.getTabs().add((Tab)root);
+
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+
+
+               /* String item = (String)contactsList.getSelectionModel().getSelectedItem();
                 var tab = new Tab();
                 tab.setText(item);
 
+                // messages view
                 var messagesTextArea = new TextArea();
                 messagesTextArea.setEditable(false);
+
+                // contains message to send
                 var messageToSendTextField = new TextField();
+                messageToSendTextField.setOnAction(this::SendMessage);
 
                 var sendButton = new Button("Send");
                 sendButton.setDefaultButton(true);
-                sendButton.setOnAction(this::SendButtonClicked);
+                sendButton.setOnAction(this::SendMessage);
 
                 var sendMessageHBox = new HBox();
                 HBox.setHgrow(messageToSendTextField, Priority.ALWAYS);
@@ -61,9 +82,19 @@ public class ClientController
 
                 tab.setContent(borderPane);
                 conversationTabPane.getTabs().add(tab);
-                messageToSendTextField.requestFocus();
+                messageToSendTextField.requestFocus();*/
             }
         }
+    }
+
+    private void SendMessage(ActionEvent actionEvent)
+    {
+        var x = actionEvent;
+        var textField = (TextField)actionEvent.getSource();
+        var text = textField.getText();
+        //read the message from the text field
+        //get current receiver
+        //send actual message
     }
 
     private void ShowReceivedMessages()
@@ -74,7 +105,7 @@ public class ClientController
 
             if (message != null)
             {
-                var handlerFactory = new HandlerFactory(contactsList);
+                var handlerFactory = new ClientHandlerFactory(contactsList);
                 var messageHandler = handlerFactory.Get(message);
                 messageHandler.Handle(message);
             }
@@ -87,12 +118,5 @@ public class ClientController
                 e.printStackTrace();
             }
         }
-    }
-
-
-
-    private void SendButtonClicked(ActionEvent actionEvent)
-    {
-
     }
 }

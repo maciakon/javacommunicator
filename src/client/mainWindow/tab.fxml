@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Tab xmlns="http://javafx.com/javafx" fx:controller="client.mainWindow.tabController" xmlns:fx="http://javafx.com/fxml" text="">
+    <BorderPane>
+        <center>
+            <TextArea editable="false">
+
+            </TextArea>
+        </center>
+        <bottom>
+            <HBox>
+                <TextField>
+
+                </TextField>
+                <Button>
+
+                </Button>
+            </HBox>
+        </bottom>
+    </BorderPane>
+</Tab>

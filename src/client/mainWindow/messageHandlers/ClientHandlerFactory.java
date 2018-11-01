@@ -1,4 +1,4 @@
-package client.mainWindow;
+package client.mainWindow.messageHandlers;
 
 import javafx.scene.control.ListView;
 import shared.messages.ContactsListUpdatedMessage;
@@ -8,12 +8,12 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HandlerFactory implements shared.IHandlerFactory
+public class ClientHandlerFactory implements shared.IHandlerFactory
 {
     Map<Type, IHandle> _handlers = new HashMap<>();
     private ListView _contactsList;
 
-    public HandlerFactory(ListView contactsList)
+    public ClientHandlerFactory(ListView contactsList)
     {
         _contactsList = contactsList;
         RegisterHandlers();
