@@ -41,14 +41,18 @@ public class ClientController
         {
             if (mouseEvent.getClickCount() == 2)
             {
+                String contactName = (String)contactsList.getSelectionModel().getSelectedItem();
                 var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
+                var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactName);
+                fxmlLoader.setControllerFactory(tabControllerFactory);
+
                 try
                 {
                     var root = fxmlLoader.load();
                     conversationTabPane.getTabs().add((Tab)root);
-                    var tabController =  (TabController)fxmlLoader.getController();
-                    String contactName = (String)contactsList.getSelectionModel().getSelectedItem();
-                    tabController.setName(contactName);
+                    //var tabController =  (TabController)fxmlLoader.getController();
+
+                    // tabController.setName(contactName);
 
                 }
                 catch (IOException e)

@@ -6,16 +6,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 
+public class TabController
+{
+    private final JavaCommunicatorClient client;
+    private final String tabName;
 
-public class TabController {
     @FXML
     Tab conversationTab;
     @FXML
     TextField sendMessageTextField;
 
-    public void setName(String contactName)
+    public TabController(JavaCommunicatorClient client, String tabName)
     {
-        conversationTab.setText(contactName);
+        this.client = client;
+        this.tabName = tabName;
     }
 
     public void SendMessageAction(ActionEvent actionEvent)
@@ -27,5 +31,6 @@ public class TabController {
     protected void initialize()
     {
         Platform.runLater(() -> sendMessageTextField.requestFocus());
+        conversationTab.setText(this.tabName);
     }
 }
