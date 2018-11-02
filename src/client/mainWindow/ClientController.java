@@ -46,43 +46,15 @@ public class ClientController
                 {
                     var root = fxmlLoader.load();
                     conversationTabPane.getTabs().add((Tab)root);
+                    var tabController =  (TabController)fxmlLoader.getController();
+                    String contactName = (String)contactsList.getSelectionModel().getSelectedItem();
+                    tabController.setName(contactName);
 
                 }
                 catch (IOException e)
                 {
                     e.printStackTrace();
                 }
-
-
-               /* String item = (String)contactsList.getSelectionModel().getSelectedItem();
-                var tab = new Tab();
-                tab.setText(item);
-
-                // messages view
-                var messagesTextArea = new TextArea();
-                messagesTextArea.setEditable(false);
-
-                // contains message to send
-                var messageToSendTextField = new TextField();
-                messageToSendTextField.setOnAction(this::SendMessage);
-
-                var sendButton = new Button("Send");
-                sendButton.setDefaultButton(true);
-                sendButton.setOnAction(this::SendMessage);
-
-                var sendMessageHBox = new HBox();
-                HBox.setHgrow(messageToSendTextField, Priority.ALWAYS);
-                sendMessageHBox.getChildren().addAll(messageToSendTextField, sendButton);
-                sendMessageHBox.setPadding(new Insets(10, 0, 0 ,0));
-                sendMessageHBox.setSpacing(10);
-
-                var borderPane = new BorderPane();
-                borderPane.setCenter(messagesTextArea);
-                borderPane.setBottom(sendMessageHBox);
-
-                tab.setContent(borderPane);
-                conversationTabPane.getTabs().add(tab);
-                messageToSendTextField.requestFocus();*/
             }
         }
     }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 
 <?import javafx.geometry.Insets?>
-<Tab xmlns="http://javafx.com/javafx" fx:controller="client.mainWindow.tabController" xmlns:fx="http://javafx.com/fxml" text="">
+<Tab fx:id="conversationTab" xmlns="http://javafx.com/javafx" fx:controller="client.mainWindow.TabController" xmlns:fx="http://javafx.com/fxml" text="">
     <BorderPane>
         <center>
             <TextArea editable="false"/>
@@ -17,8 +17,8 @@
                 <padding>
                     <Insets top="10"/>
                 </padding>
-                <TextField fx:id="sendMessageTextField" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="sendButton" text="Send" defaultButton="true"/>
+                <TextField fx:id="sendMessageTextField" HBox.hgrow="ALWAYS" onAction="#SendMessageAction"/>
+                <Button fx:id="sendButton" text="Send" defaultButton="true" onAction="#SendMessageAction"/>
             </HBox>
         </bottom>
     </BorderPane>
