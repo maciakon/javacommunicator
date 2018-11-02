@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.geometry.Insets?>
 <Tab xmlns="http://javafx.com/javafx" fx:controller="client.mainWindow.tabController" xmlns:fx="http://javafx.com/fxml" text="">
     <BorderPane>
         <center>
-            <TextArea editable="false">
-
-            </TextArea>
+            <TextArea editable="false"/>
         </center>
         <bottom>
-            <HBox>
-                <TextField>
-
-                </TextField>
-                <Button>
-
-                </Button>
+            <HBox spacing="10">
+                <padding>
+                    <Insets top="10"/>
+                </padding>
+                <TextField fx:id="sendMessageTextField" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="sendButton" text="Send" defaultButton="true"/>
             </HBox>
         </bottom>
     </BorderPane>
