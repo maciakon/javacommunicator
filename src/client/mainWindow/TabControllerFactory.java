@@ -2,15 +2,17 @@ package client.mainWindow;
 
 import javafx.util.Callback;
 
+import java.util.HashMap;
+
 public class TabControllerFactory implements Callback<Class<?>, Object>
 {
     private final JavaCommunicatorClient client;
-    private final String tabName;
+    private int _contactIndex;
 
-    public TabControllerFactory(JavaCommunicatorClient client, String tabName)
+    public TabControllerFactory(JavaCommunicatorClient client, int contactIndex)
     {
         this.client = client;
-        this.tabName = tabName;
+        _contactIndex = contactIndex;
     }
 
     @Override
@@ -18,17 +20,16 @@ public class TabControllerFactory implements Callback<Class<?>, Object>
     {
         if (cls == TabController.class)
         {
-            return new TabController(this.client, this.tabName);
+            return new TabController(this.client, _contactIndex);
         }
-        else
-            try
-            {
-                return cls.newInstance();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+        try
+        {
+            return cls.getConstructor().newInstance();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

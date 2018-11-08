@@ -1,16 +1,13 @@
 package client.mainWindow;
 
 import client.mainWindow.messageHandlers.ClientHandlerFactory;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 
 import java.io.IOException;
 
@@ -42,18 +39,16 @@ public class ClientController
             if (mouseEvent.getClickCount() == 2)
             {
                 String contactName = (String)contactsList.getSelectionModel().getSelectedItem();
+                var contactIndex = contactsList.getSelectionModel().getSelectedIndex();
                 var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
-                var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactName);
+                var contactsMap = _javaCommunicatorClient.getContacts();
+                var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactIndex);
                 fxmlLoader.setControllerFactory(tabControllerFactory);
 
                 try
                 {
                     var root = fxmlLoader.load();
                     conversationTabPane.getTabs().add((Tab)root);
-                    //var tabController =  (TabController)fxmlLoader.getController();
-
-                    // tabController.setName(contactName);
-
                 }
                 catch (IOException e)
                 {
@@ -61,16 +56,6 @@ public class ClientController
                 }
             }
         }
-    }
-
-    private void SendMessage(ActionEvent actionEvent)
-    {
-        var x = actionEvent;
-        var textField = (TextField)actionEvent.getSource();
-        var text = textField.getText();
-        //read the message from the text field
-        //get current receiver
-        //send actual message
     }
 
     private void ShowReceivedMessages()
@@ -81,7 +66,7 @@ public class ClientController
 
             if (message != null)
             {
-                var handlerFactory = new ClientHandlerFactory(contactsList);
+                var handlerFactory = new ClientHandlerFactory(contactsList, _javaCommunicatorClient);
                 var messageHandler = handlerFactory.Get(message);
                 messageHandler.Handle(message);
             }

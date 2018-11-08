@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,6 +26,7 @@ public class JavaCommunicatorClient
     private static CountDownLatch _latch = new CountDownLatch(1);
     private String _login;
     private BlockingQueue<IMessage> _receivedPacks;
+    private HashMap<Integer, Map.Entry<Integer, String>> _contacts;
 
     public JavaCommunicatorClient(String host, int portNumber, String login)
     {
@@ -154,5 +157,15 @@ public class JavaCommunicatorClient
         var handShakeMessage = new HandShakeMessage();
         handShakeMessage.Name = _login;
         Send(handShakeMessage);
+    }
+
+    public void setContacts(HashMap<Integer, Map.Entry<Integer, String>> contacts)
+    {
+        _contacts = contacts;
+    }
+
+    public HashMap<Integer, Map.Entry<Integer,String>> getContacts()
+    {
+        return _contacts;
     }
 }

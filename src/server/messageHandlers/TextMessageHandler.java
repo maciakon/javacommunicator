@@ -16,6 +16,5 @@ public class TextMessageHandler implements IHandle<TextMessage>
     @Override
     public void Handle(TextMessage type)
     {
-
     }
 }

@@ -1,5 +1,6 @@
 package client.mainWindow.messageHandlers;
 
+import client.mainWindow.JavaCommunicatorClient;
 import javafx.scene.control.ListView;
 import shared.messages.ContactsListUpdatedMessage;
 import shared.IHandle;
@@ -12,16 +13,18 @@ public class ClientHandlerFactory implements shared.IHandlerFactory
 {
     Map<Type, IHandle> _handlers = new HashMap<>();
     private ListView _contactsList;
+    private JavaCommunicatorClient _client;
 
-    public ClientHandlerFactory(ListView contactsList)
+    public ClientHandlerFactory(ListView contactsList, JavaCommunicatorClient client)
     {
         _contactsList = contactsList;
+        _client = client;
         RegisterHandlers();
     }
 
     private void RegisterHandlers()
     {
-        _handlers.put(ContactsListUpdatedMessage.class, new ContactsListUpdatedHandler(_contactsList));
+        _handlers.put(ContactsListUpdatedMessage.class, new ContactsListUpdatedHandler(_contactsList, _client));
     }
 
     @Override
