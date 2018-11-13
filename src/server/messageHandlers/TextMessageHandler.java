@@ -1,6 +1,5 @@
 package server.messageHandlers;
 
-import server.ClientConnection;
 import server.IJavaCommunicatorServer;
 import shared.IHandle;
 import shared.messages.TextMessage;

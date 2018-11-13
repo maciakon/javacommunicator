@@ -3,7 +3,6 @@ package server;
 import server.messageHandlers.ServerMessageHandlersFactory;
 import shared.messages.ContactsListUpdatedMessage;
 import shared.messages.IMessage;
-import shared.messages.MessageBase;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -72,13 +71,6 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
             var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);
             singleClient.Send(contactsUpdatedMessage);
         }
-    }
-
-    @Override
-    public void Route(MessageBase message)
-    {
-        ClientConnection recipient = (ClientConnection) get_connectedClients().stream().filter(client-> client.get_Id()== message.getRecipientId());
-        recipient.Send(message);
     }
 
     private void run()

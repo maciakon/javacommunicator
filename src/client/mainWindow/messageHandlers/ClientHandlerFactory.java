@@ -5,6 +5,8 @@ import javafx.scene.control.ListView;
 import shared.messages.ContactsListUpdatedMessage;
 import shared.IHandle;
 import shared.messages.IMessage;
+import shared.messages.TextMessage;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,7 @@ public class ClientHandlerFactory implements shared.IHandlerFactory
     private void RegisterHandlers()
     {
         _handlers.put(ContactsListUpdatedMessage.class, new ContactsListUpdatedHandler(_contactsList, _client));
+        _handlers.put(TextMessage.class, new TextMessageHandler());
     }
 
     @Override
