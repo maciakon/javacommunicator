@@ -1,6 +1,9 @@
 package server;
 
 import shared.messages.IMessage;
+import shared.messages.MessageBase;
+
+import java.util.List;
 
 public interface IJavaCommunicatorServer
 {
@@ -12,4 +15,8 @@ public interface IJavaCommunicatorServer
     void Disconnect(ClientConnection clientConnection);
 
     void AddClientId(int clientId, String name);
+
+    void Route(MessageBase message);
+
+    List<ClientConnection> get_connectedClients();
 }

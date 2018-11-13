@@ -73,6 +73,6 @@ public class ClientConnection implements Runnable
 
     public int get_Id()
     {
-        return _socket.getLocalPort();
+        return _socket.getPort();
     }
 }

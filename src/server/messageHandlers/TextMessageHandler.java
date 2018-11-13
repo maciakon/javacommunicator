@@ -1,5 +1,6 @@
 package server.messageHandlers;
 
+import server.ClientConnection;
 import server.IJavaCommunicatorServer;
 import shared.IHandle;
 import shared.messages.TextMessage;
@@ -14,7 +15,12 @@ public class TextMessageHandler implements IHandle<TextMessage>
     }
 
     @Override
-    public void Handle(TextMessage type)
+    public void Handle(TextMessage message)
     {
+        this.javaCommunicatorServer
+                .get_connectedClients()
+                .stream()
+                .filter(client -> client.get_Id() == message.getRecipientId())
+                .forEach(client -> client.Send(message));
     }
 }

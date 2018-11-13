@@ -3,6 +3,7 @@ package server;
 import server.messageHandlers.ServerMessageHandlersFactory;
 import shared.messages.ContactsListUpdatedMessage;
 import shared.messages.IMessage;
+import shared.messages.MessageBase;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,13 +16,13 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     private final ServerMessageHandlersFactory _handlersFactory;
     private ServerSocket _serverSocket;
     private Thread _runningThread;
-    private static List<ClientConnection> _connectedClients;
+    private List<ClientConnection> _connectedClients;
     private HashMap<Integer, String> _clientNames;
 
     JavaCommunicatorServer(ServerSocket serverSocket)
     {
         _serverSocket = serverSocket;
-        _connectedClients = new ArrayList<>();
+        set_connectedClients(new ArrayList<>());
         _clientNames = new HashMap<>();
         _handlersFactory = new ServerMessageHandlersFactory(this);
     }
@@ -52,7 +53,6 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     public void Handle(int clientId, IMessage message)
     {
         var handler = _handlersFactory.Get(message);
-        // handler.Handle(clientId, packet.get_recipientId(), packet.get_message());
         handler.Handle(message);
     }
 
@@ -60,18 +60,25 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     @Override
     public void Disconnect(ClientConnection clientConnection)
     {
-        _connectedClients.remove(clientConnection);
+        get_connectedClients().remove(clientConnection);
     }
 
     @Override
     public void AddClientId(int localPort, String name)
     {
         _clientNames.put(localPort, name);
-        for (ClientConnection singleClient: _connectedClients)
+        for (ClientConnection singleClient: get_connectedClients())
         {
             var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);
             singleClient.Send(contactsUpdatedMessage);
         }
+    }
+
+    @Override
+    public void Route(MessageBase message)
+    {
+        ClientConnection recipient = (ClientConnection) get_connectedClients().stream().filter(client-> client.get_Id()== message.getRecipientId());
+        recipient.Send(message);
     }
 
     private void run()
@@ -94,7 +101,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
 
     private void EstablishConnection(ClientConnection connectedClient)
     {
-        _connectedClients.add(connectedClient);
+        get_connectedClients().add(connectedClient);
         connectedClient.OpenStreams();
 
         new Thread(connectedClient).start();
@@ -102,4 +109,13 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     }
 
 
+    public List<ClientConnection> get_connectedClients()
+    {
+        return _connectedClients;
+    }
+
+    public void set_connectedClients(List<ClientConnection> _connectedClients)
+    {
+        this._connectedClients = _connectedClients;
+    }
 }

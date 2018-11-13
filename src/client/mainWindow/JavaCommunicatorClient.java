@@ -45,7 +45,7 @@ public class JavaCommunicatorClient
         }
     }
 
-    public void Start()
+    void Start()
     {
         _sendingThread = new Thread(this::SendingLoop);
         _receivingThread = new Thread(this::ReceivingLoop);
