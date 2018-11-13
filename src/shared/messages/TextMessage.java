@@ -9,4 +9,9 @@ public class TextMessage extends MessageBase
         setRecipient(recipientId);
         this.message = message;
     }
+
+    public String getMessage()
+    {
+        return message;
+    }
 }

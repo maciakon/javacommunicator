@@ -38,23 +38,26 @@ public class ClientController
         {
             if (mouseEvent.getClickCount() == 2)
             {
-                String contactName = (String)contactsList.getSelectionModel().getSelectedItem();
                 var contactIndex = contactsList.getSelectionModel().getSelectedIndex();
-                var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
-                var contactsMap = _javaCommunicatorClient.getContacts();
-                var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactIndex);
-                fxmlLoader.setControllerFactory(tabControllerFactory);
-
-                try
-                {
-                    var root = fxmlLoader.load();
-                    conversationTabPane.getTabs().add((Tab)root);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                AddTab(contactIndex);
             }
+        }
+    }
+
+    public void AddTab(int contactIndex)
+    {
+        var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
+        var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactIndex);
+        fxmlLoader.setControllerFactory(tabControllerFactory);
+
+        try
+        {
+            var root = fxmlLoader.load();
+            conversationTabPane.getTabs().add((Tab)root);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -66,7 +69,7 @@ public class ClientController
 
             if (message != null)
             {
-                var handlerFactory = new ClientHandlerFactory(contactsList, _javaCommunicatorClient);
+                var handlerFactory = new ClientHandlerFactory(contactsList, conversationTabPane, this, _javaCommunicatorClient);
                 var messageHandler = handlerFactory.Get(message);
                 messageHandler.Handle(message);
             }

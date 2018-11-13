@@ -2,7 +2,6 @@ package client.mainWindow;
 
 import shared.messages.HandShakeMessage;
 import shared.messages.IMessage;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,6 +26,8 @@ public class JavaCommunicatorClient
     private String _login;
     private BlockingQueue<IMessage> _receivedPacks;
     private HashMap<Integer, Map.Entry<Integer, String>> _contacts;
+    private HashMap<Integer, TabController> conversationTabsControllers = new HashMap<>();
+
 
     public JavaCommunicatorClient(String host, int portNumber, String login)
     {
@@ -161,11 +162,17 @@ public class JavaCommunicatorClient
 
     public void setContacts(HashMap<Integer, Map.Entry<Integer, String>> contacts)
     {
+        // contacts is a map of: index on list view to <port, name> of a client
         _contacts = contacts;
     }
 
     public HashMap<Integer, Map.Entry<Integer,String>> getContacts()
     {
         return _contacts;
+    }
+
+    public HashMap<Integer, TabController> getConversationTabsControllers()
+    {
+        return conversationTabsControllers;
     }
 }

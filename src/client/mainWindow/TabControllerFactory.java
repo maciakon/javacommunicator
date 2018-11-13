@@ -2,8 +2,6 @@ package client.mainWindow;
 
 import javafx.util.Callback;
 
-import java.util.HashMap;
-
 public class TabControllerFactory implements Callback<Class<?>, Object>
 {
     private final JavaCommunicatorClient client;
