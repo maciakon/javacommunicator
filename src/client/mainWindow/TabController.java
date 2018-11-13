@@ -2,6 +2,7 @@ package client.mainWindow;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
@@ -10,7 +11,7 @@ import shared.messages.TextMessage;
 
 public class TabController
 {
-    private final JavaCommunicatorClient client;
+    private final JavaCommunicatorClient _client;
     private int _contactIndex;
 
     @FXML
@@ -19,33 +20,40 @@ public class TabController
     TextField sendMessageTextField;
     @FXML
     TextArea messagesArea;
+    private String _contactName;
+    private Integer _contactId;
 
     public TabController(JavaCommunicatorClient client, int contactIndex)
     {
-        this.client = client;
-        this._contactIndex = contactIndex;
+        _client = client;
+        _contactIndex = contactIndex;
     }
 
     public void SendMessageAction(ActionEvent actionEvent)
     {
         var textToSend = sendMessageTextField.getText();
-        var clientId = this.client.getContacts().get(_contactIndex).getKey();
+        var clientId = _client.getContacts().get(_contactIndex).getKey();
         var messageToSend = new TextMessage(clientId, textToSend);
-        this.client.Send(messageToSend);
+        _client.Send(messageToSend);
     }
 
     public void AppendMessage(TextMessage message)
     {
-        messagesArea.appendText(message.getMessage()+"\n");
+        messagesArea.appendText(message.GetSender() + ":" + message.getMessage()+"\n");
+    }
+
+    public void OnClosing(Event event)
+    {
+        _client.getConversationTabsControllers().remove(_contactId);
     }
 
     @FXML
     protected void initialize()
     {
         Platform.runLater(() -> sendMessageTextField.requestFocus());
-        var clientName = this.client.getContacts().get(_contactIndex).getValue();
-        var clientId = this.client.getContacts().get(_contactIndex).getKey();
-        this.client.getConversationTabsControllers().put(clientId, this);
-        conversationTab.setText(clientName);
+        _contactName = _client.getContacts().get(_contactIndex).getValue();
+        _contactId = _client.getContacts().get(_contactIndex).getKey();
+        _client.getConversationTabsControllers().put(_contactId, this);
+        conversationTab.setText(_contactName);
     }
 }

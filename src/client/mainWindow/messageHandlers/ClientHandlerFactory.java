@@ -33,7 +33,7 @@ public class ClientHandlerFactory implements shared.IHandlerFactory
     private void RegisterHandlers()
     {
         _handlers.put(ContactsListUpdatedMessage.class, new ContactsListUpdatedHandler(_contactsList, _client));
-        _handlers.put(TextMessage.class, new TextMessageHandler(_conversationTabPane, _clientController, _client));
+        _handlers.put(TextMessage.class, new TextMessageHandler(_clientController, _client));
     }
 
     @Override

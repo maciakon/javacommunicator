@@ -12,13 +12,11 @@ import java.util.Map;
 
 public class TextMessageHandler implements IHandle<TextMessage>
 {
-    private TabPane _conversationTabPane;
     private ClientController _clientController;
     private JavaCommunicatorClient _client;
 
-    public TextMessageHandler(TabPane conversationTabPane, ClientController clientController, JavaCommunicatorClient client)
+    public TextMessageHandler(ClientController clientController, JavaCommunicatorClient client)
     {
-        _conversationTabPane = conversationTabPane;
         _clientController = clientController;
         _client = client;
     }
