@@ -175,4 +175,6 @@ public class JavaCommunicatorClient
     {
         return conversationTabsControllers;
     }
+
+    public String GetLogin() { return _login; }
 }

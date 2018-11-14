@@ -41,7 +41,7 @@ public class TextMessageHandler implements IHandle<TextMessage>
 
                 tabController = _client.getConversationTabsControllers().get(message.GetSender());
             }
-            tabController.AppendMessage(message);
+            tabController.AppendMessage(message, "");
         });
     }
 }
