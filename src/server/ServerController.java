@@ -31,7 +31,7 @@ public class ServerController
         var portNumber = _portNumberValidator.GetPortNumberFromString(portNumberText.getText());
         if(portNumber > 0)
         {
-            SetStartStopButtonsStates(true);
+            SetControlsState(true);
             _server = new JavaCommunicatorServer(new ServerSocket(portNumber));
             _server.Start();
         }
@@ -43,19 +43,24 @@ public class ServerController
 
     public void stopButtonClicked()
     {
-        SetStartStopButtonsStates(false);
+        SetControlsState(false);
+        portNumberText.setEditable(true);
         _server.Stop();
     }
 
-    private void SetStartStopButtonsStates(boolean serverStarted)
+    private void SetControlsState(boolean serverStarted)
     {
         if(serverStarted)
         {
+            portNumberText.setEditable(false);
+            portNumberText.setDisable(true);
             startButton.setDisable(true);
             stopButton.setDisable(false);
         }
         else
         {
+            portNumberText.setEditable(true);
+            portNumberText.setDisable(false);
             startButton.setDisable(false);
             stopButton.setDisable(true);
         }
