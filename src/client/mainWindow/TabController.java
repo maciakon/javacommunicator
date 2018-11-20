@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import shared.messages.TextMessage;
+import shared.implementation.messages.TextMessage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,7 +23,7 @@ public class TabController
 {
     private final JavaCommunicatorClient _client;
     private final DateTimeFormatter _dateTimeFormatter;
-    private int _contactIndex;
+    private final int _contactIndex;
 
     @FXML
     Tab conversationTab;
@@ -34,7 +34,7 @@ public class TabController
 
     private String _contactName;
     private Integer _contactId;
-    private ObservableList _messagesList;
+    private final ObservableList _messagesList;
 
     public TabController(JavaCommunicatorClient client, int contactIndex)
     {

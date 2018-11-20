@@ -19,7 +19,7 @@
                     <Insets top="10" />
                 </padding>
                 <TextField fx:id="sendMessageTextField" onAction="#SendMessageAction" HBox.hgrow="ALWAYS" />
-                <Button fx:id="sendButton" defaultButton="true" onAction="#SendMessageAction" text="Send" />
+                <Button defaultButton="true" onAction="#SendMessageAction" text="Send" />
             </HBox>
         </bottom>
     </BorderPane>

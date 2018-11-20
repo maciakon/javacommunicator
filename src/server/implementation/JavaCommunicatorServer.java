@@ -1,8 +1,9 @@
-package server;
+package server.implementation;
 
-import server.messageHandlers.ServerMessageHandlersFactory;
-import shared.messages.ContactsListUpdatedMessage;
-import shared.messages.IMessage;
+import server.interfaces.IJavaCommunicatorServer;
+import server.implementation.messageHandlers.ServerMessageHandlersFactory;
+import shared.implementation.messages.ContactsListUpdatedMessage;
+import shared.interfaces.messages.IMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,15 +14,15 @@ import java.util.List;
 public class JavaCommunicatorServer implements IJavaCommunicatorServer
 {
     private final ServerMessageHandlersFactory _handlersFactory;
-    private ServerSocket _serverSocket;
+    private final ServerSocket _serverSocket;
     private Thread _runningThread;
-    private List<ClientConnection> _connectedClients;
-    private HashMap<Integer, String> _clientNames;
+    private final List<ClientConnection> _connectedClients;
+    private final HashMap<Integer, String> _clientNames;
 
     JavaCommunicatorServer(ServerSocket serverSocket)
     {
         _serverSocket = serverSocket;
-        set_connectedClients(new ArrayList<>());
+        _connectedClients = new ArrayList<>();
         _clientNames = new HashMap<>();
         _handlersFactory = new ServerMessageHandlersFactory(this);
     }
@@ -48,6 +49,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void Handle(int clientId, IMessage message)
     {
@@ -61,6 +63,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
     {
         get_connectedClients().remove(clientConnection);
         RemoveClient(port);
+        clientConnection.CloseStreams();
     }
 
     @Override
@@ -74,7 +77,7 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
         }
     }
 
-    public void RemoveClient(int localPort)
+    private void RemoveClient(int localPort)
     {
         _clientNames.remove(localPort);
         for (ClientConnection singleClient: get_connectedClients())
@@ -111,14 +114,9 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
 
     }
 
-
     public List<ClientConnection> get_connectedClients()
     {
         return _connectedClients;
     }
 
-    public void set_connectedClients(List<ClientConnection> _connectedClients)
-    {
-        this._connectedClients = _connectedClients;
-    }
 }

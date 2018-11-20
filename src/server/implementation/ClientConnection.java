@@ -1,7 +1,6 @@
-package server;
+package server.implementation;
 
-import shared.messages.IMessage;
-
+import shared.interfaces.messages.IMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +9,7 @@ import java.net.Socket;
 public class ClientConnection implements Runnable
 {
     private final Socket _socket;
-    private JavaCommunicatorServer _server;
+    private final JavaCommunicatorServer _server;
     private ObjectInputStream _inputStream;
     private ObjectOutputStream _outputStream;
 
@@ -66,7 +65,7 @@ public class ClientConnection implements Runnable
         }
     }
 
-    public void Receive()
+    private void Receive()
     {
         while(!Thread.interrupted())
         {

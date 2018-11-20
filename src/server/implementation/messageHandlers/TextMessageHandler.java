@@ -1,12 +1,12 @@
-package server.messageHandlers;
+package server.implementation.messageHandlers;
 
-import server.IJavaCommunicatorServer;
-import shared.IHandle;
-import shared.messages.TextMessage;
+import server.interfaces.IJavaCommunicatorServer;
+import shared.interfaces.IHandle;
+import shared.implementation.messages.TextMessage;
 
 public class TextMessageHandler implements IHandle<TextMessage>
 {
-    private IJavaCommunicatorServer javaCommunicatorServer;
+    private final IJavaCommunicatorServer javaCommunicatorServer;
 
     public TextMessageHandler(IJavaCommunicatorServer javaCommunicatorServer)
     {

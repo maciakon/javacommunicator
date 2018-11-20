@@ -22,15 +22,16 @@ public class LoginController
     {
         var fxmlLoader = new FXMLLoader(getClass().getResource("../mainWindow/client.fxml"));
         Parent root = fxmlLoader.load();
-        _clientController = (ClientController)fxmlLoader.getController();
+        _clientController = fxmlLoader.getController();
         _clientController.setLogin(_loginTextField.getText());
         Scene scene = new Scene(root);
         _primaryStage.setScene(scene);
+        _primaryStage.setTitle(_loginTextField.getText() + "@JavaCommunicator");
         _primaryStage.show();
         _primaryStage.setOnCloseRequest(this::DisconnectOnExit);
     }
 
-    public void DisconnectOnExit(WindowEvent event)
+    private void DisconnectOnExit(WindowEvent event)
     {
         _clientController.DisconnectOnExit();
     }

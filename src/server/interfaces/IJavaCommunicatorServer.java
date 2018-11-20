@@ -1,6 +1,7 @@
-package server;
+package server.interfaces;
 
-import shared.messages.IMessage;
+import server.implementation.ClientConnection;
+import shared.interfaces.messages.IMessage;
 
 import java.util.List;
 

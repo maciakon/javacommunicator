@@ -1,4 +1,6 @@
-package shared.messages;
+package shared.implementation.messages;
+
+import shared.interfaces.messages.IMessage;
 
 import java.io.Serializable;
 
@@ -24,7 +26,7 @@ public class MessageBase implements Serializable, IMessage
         return recipient;
     }
 
-    public void setRecipient(int recipientId)
+    void setRecipient(int recipientId)
     {
         this.recipient = recipientId;
     }

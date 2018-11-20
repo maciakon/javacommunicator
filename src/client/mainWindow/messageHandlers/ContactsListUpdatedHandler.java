@@ -4,8 +4,8 @@ import client.mainWindow.JavaCommunicatorClient;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
-import shared.IHandle;
-import shared.messages.ContactsListUpdatedMessage;
+import shared.interfaces.IHandle;
+import shared.implementation.messages.ContactsListUpdatedMessage;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContactsListUpdatedHandler implements IHandle<ContactsListUpdatedMessage>
 {
-    private ListView _contactsList;
-    private JavaCommunicatorClient _client;
+    private final ListView _contactsList;
+    private final JavaCommunicatorClient _client;
 
     public ContactsListUpdatedHandler(ListView contactsList, JavaCommunicatorClient client)
     {

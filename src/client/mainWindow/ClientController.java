@@ -8,7 +8,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import shared.messages.PoisonedPillMessage;
+import shared.implementation.messages.PoisonedPillMessage;
 
 import java.io.IOException;
 
@@ -22,8 +22,8 @@ public class ClientController
     @FXML
     TabPane conversationTabPane;
 
-    private int _portNumber = 4441;
-    private String _host = "localhost";
+    private static final  int _portNumber = 4441;
+    private static final String _host = "localhost";
 
     public void setLogin(String login)
     {
@@ -62,6 +62,7 @@ public class ClientController
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void ProcessReceivedMessages()
     {
         while(!_readingThread.isInterrupted())
@@ -75,7 +76,7 @@ public class ClientController
 
             if (message != null)
             {
-                var handlerFactory = new ClientHandlerFactory(contactsList, conversationTabPane, this, _javaCommunicatorClient);
+                var handlerFactory = new ClientHandlerFactory(contactsList, this, _javaCommunicatorClient);
                 var messageHandler = handlerFactory.Get(message);
                 messageHandler.Handle(message);
             }
@@ -89,7 +90,6 @@ public class ClientController
                 break;
             }
         }
-        return;
     }
 
     public void DisconnectOnExit()

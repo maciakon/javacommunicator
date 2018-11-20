@@ -1,4 +1,6 @@
-package shared;
+package shared.implementation;
+
+import shared.interfaces.IPortValidator;
 
 public class PortValidator implements IPortValidator
 {

@@ -3,17 +3,13 @@ package client.mainWindow.messageHandlers;
 import client.mainWindow.ClientController;
 import client.mainWindow.JavaCommunicatorClient;
 import javafx.application.Platform;
-import javafx.scene.control.TabPane;
-import shared.IHandle;
-import shared.messages.TextMessage;
-
-import java.util.HashMap;
-import java.util.Map;
+import shared.interfaces.IHandle;
+import shared.implementation.messages.TextMessage;
 
 public class TextMessageHandler implements IHandle<TextMessage>
 {
-    private ClientController _clientController;
-    private JavaCommunicatorClient _client;
+    private final ClientController _clientController;
+    private final JavaCommunicatorClient _client;
 
     public TextMessageHandler(ClientController clientController, JavaCommunicatorClient client)
     {

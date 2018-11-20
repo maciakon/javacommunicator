@@ -1,4 +1,4 @@
-package shared.messages;
+package shared.implementation.messages;
 
 public class PoisonedPillMessage extends MessageBase
 {

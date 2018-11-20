@@ -3,28 +3,26 @@ package client.mainWindow.messageHandlers;
 import client.mainWindow.ClientController;
 import client.mainWindow.JavaCommunicatorClient;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
-import shared.messages.ContactsListUpdatedMessage;
-import shared.IHandle;
-import shared.messages.IMessage;
-import shared.messages.TextMessage;
+import shared.interfaces.IHandlerFactory;
+import shared.implementation.messages.ContactsListUpdatedMessage;
+import shared.interfaces.IHandle;
+import shared.interfaces.messages.IMessage;
+import shared.implementation.messages.TextMessage;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClientHandlerFactory implements shared.IHandlerFactory
+public class ClientHandlerFactory implements IHandlerFactory
 {
-    Map<Type, IHandle> _handlers = new HashMap<>();
-    private ListView _contactsList;
-    private TabPane _conversationTabPane;
-    private ClientController _clientController;
-    private JavaCommunicatorClient _client;
+    private final Map<Type, IHandle> _handlers = new HashMap<>();
+    private final ListView _contactsList;
+    private final ClientController _clientController;
+    private final JavaCommunicatorClient _client;
 
-    public ClientHandlerFactory(ListView contactsList, TabPane conversationTabPane, ClientController clientController, JavaCommunicatorClient client)
+    public ClientHandlerFactory(ListView contactsList, ClientController clientController, JavaCommunicatorClient client)
     {
         _contactsList = contactsList;
-        _conversationTabPane = conversationTabPane;
         _clientController = clientController;
         _client = client;
         RegisterHandlers();

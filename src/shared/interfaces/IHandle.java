@@ -1,6 +1,6 @@
-package shared;
+package shared.interfaces;
 
-import shared.messages.IMessage;
+import shared.interfaces.messages.IMessage;
 
 public interface IHandle<T extends IMessage>
 {

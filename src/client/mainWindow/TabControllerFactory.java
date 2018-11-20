@@ -2,10 +2,10 @@ package client.mainWindow;
 
 import javafx.util.Callback;
 
-public class TabControllerFactory implements Callback<Class<?>, Object>
+class TabControllerFactory implements Callback<Class<?>, Object>
 {
     private final JavaCommunicatorClient client;
-    private int _contactIndex;
+    private final int _contactIndex;
 
     public TabControllerFactory(JavaCommunicatorClient client, int contactIndex)
     {

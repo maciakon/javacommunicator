@@ -1,10 +1,10 @@
-package shared.messages;
+package shared.implementation.messages;
 
 import java.util.HashMap;
 
 public class ContactsListUpdatedMessage extends MessageBase
 {
-    private HashMap<Integer, String> contacts;
+    private final HashMap<Integer, String> contacts;
 
     public ContactsListUpdatedMessage(HashMap<Integer, String> contacts)
     {

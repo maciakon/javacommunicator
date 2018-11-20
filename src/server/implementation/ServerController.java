@@ -1,12 +1,13 @@
-package server;
+package server.implementation;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import shared.DialogManager;
-import shared.IPortValidator;
-import shared.PortValidator;
+import server.interfaces.IJavaCommunicatorServer;
+import shared.implementation.DialogManager;
+import shared.interfaces.IPortValidator;
+import shared.implementation.PortValidator;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -18,7 +19,7 @@ public class ServerController
     private TextField portNumberText;
 
     private IJavaCommunicatorServer _server;
-    private IPortValidator _portNumberValidator;
+    private final IPortValidator _portNumberValidator;
 
     public ServerController()
     {

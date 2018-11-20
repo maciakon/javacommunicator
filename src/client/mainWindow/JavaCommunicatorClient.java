@@ -1,8 +1,8 @@
 package client.mainWindow;
 
-import shared.messages.HandShakeMessage;
-import shared.messages.IMessage;
-import shared.messages.PoisonedPillMessage;
+import shared.implementation.messages.HandShakeMessage;
+import shared.interfaces.messages.IMessage;
+import shared.implementation.messages.PoisonedPillMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,11 +23,11 @@ public class JavaCommunicatorClient
     private Thread _sendingThread;
     private Thread _receivingThread;
     private CopyOnWriteArrayList<IMessage> _messagesToSend;
-    private static CountDownLatch _latch = new CountDownLatch(1);
-    private String _login;
+    private static final CountDownLatch _latch = new CountDownLatch(1);
+    private final String _login;
     private BlockingQueue<IMessage> _receivedPacks;
     private HashMap<Integer, Map.Entry<Integer, String>> _contacts;
-    private HashMap<Integer, TabController> conversationTabsControllers = new HashMap<>();
+    private final HashMap<Integer, TabController> conversationTabsControllers = new HashMap<>();
 
 
     public JavaCommunicatorClient(String host, int portNumber, String login)
@@ -124,7 +124,7 @@ public class JavaCommunicatorClient
             }
             try
             {
-                _sendingThread.sleep(200);
+                Thread.sleep(200);
             }
             catch (InterruptedException e)
             {
@@ -132,7 +132,6 @@ public class JavaCommunicatorClient
                 break;
             }
         }
-        return;
     }
 
     private void ReceivingLoop()
@@ -145,24 +144,15 @@ public class JavaCommunicatorClient
                 var objectRead = _objectInputStream.readObject();
                 _receivedPacks.add((IMessage) objectRead);
             }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
             catch(Exception e)
             {
                 e.printStackTrace();
                 break;
             }
         }
-        return;
     }
 
-    public void SendHandshake()
+    private void SendHandshake()
     {
         var handShakeMessage = new HandShakeMessage();
         handShakeMessage.Name = _login;

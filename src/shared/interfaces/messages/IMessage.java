@@ -1,4 +1,4 @@
-package shared.messages;
+package shared.interfaces.messages;
 
 public interface IMessage
 {

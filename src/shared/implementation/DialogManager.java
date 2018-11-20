@@ -1,4 +1,4 @@
-package shared;
+package shared.implementation;
 
 import javafx.scene.control.Alert;
 

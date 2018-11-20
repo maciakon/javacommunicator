@@ -1,12 +1,12 @@
-package server.messageHandlers;
+package server.implementation.messageHandlers;
 
-import server.IJavaCommunicatorServer;
-import shared.messages.HandShakeMessage;
-import shared.IHandle;
+import server.interfaces.IJavaCommunicatorServer;
+import shared.implementation.messages.HandShakeMessage;
+import shared.interfaces.IHandle;
 
 public class HandshakeMessageHandler implements IHandle<HandShakeMessage>
 {
-    private IJavaCommunicatorServer _server;
+    private final IJavaCommunicatorServer _server;
 
     HandshakeMessageHandler(IJavaCommunicatorServer server)
     {
