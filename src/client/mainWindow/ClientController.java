@@ -8,6 +8,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import shared.messages.PoisonedPillMessage;
 
 import java.io.IOException;
 
@@ -28,7 +29,7 @@ public class ClientController
     {
         _javaCommunicatorClient = new JavaCommunicatorClient(_host, _portNumber, login);
         _javaCommunicatorClient.Start();
-        _readingThread = new Thread(this::ShowReceivedMessages);
+        _readingThread = new Thread(this::ProcessReceivedMessages);
         _readingThread.start();
     }
 
@@ -61,11 +62,16 @@ public class ClientController
         }
     }
 
-    private void ShowReceivedMessages()
+    private void ProcessReceivedMessages()
     {
         while(!_readingThread.isInterrupted())
         {
             var message = _javaCommunicatorClient.Receive();
+            if(message instanceof PoisonedPillMessage)
+            {
+                // interrupt thread and stop blocking queue from waiting for items
+                return;
+            }
 
             if (message != null)
             {
@@ -80,7 +86,15 @@ public class ClientController
             catch (InterruptedException e)
             {
                 e.printStackTrace();
+                break;
             }
         }
+        return;
+    }
+
+    public void DisconnectOnExit()
+    {
+        _readingThread.interrupt();
+        _javaCommunicatorClient.Stop();
     }
 }
