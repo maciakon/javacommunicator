@@ -2,6 +2,8 @@ package client.mainWindow;
 
 import shared.messages.HandShakeMessage;
 import shared.messages.IMessage;
+import shared.messages.PoisonedPillMessage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,7 +23,6 @@ public class JavaCommunicatorClient
     private Thread _sendingThread;
     private Thread _receivingThread;
     private CopyOnWriteArrayList<IMessage> _messagesToSend;
-    private CopyOnWriteArrayList<IMessage> _receivedPackets = new CopyOnWriteArrayList<>();
     private static CountDownLatch _latch = new CountDownLatch(1);
     private String _login;
     private BlockingQueue<IMessage> _receivedPacks;
@@ -61,6 +62,8 @@ public class JavaCommunicatorClient
         {
             _sendingThread.interrupt();
             _receivingThread.interrupt();
+            _receivedPacks.add(new PoisonedPillMessage());
+
             try
             {
                 _socket.close();
@@ -126,6 +129,7 @@ public class JavaCommunicatorClient
             catch (InterruptedException e)
             {
                 e.printStackTrace();
+                break;
             }
         }
         return;
@@ -148,6 +152,11 @@ public class JavaCommunicatorClient
             catch (ClassNotFoundException e)
             {
                 e.printStackTrace();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                break;
             }
         }
         return;

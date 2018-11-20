@@ -35,7 +35,20 @@ public class ClientConnection implements Runnable
         }
         catch (IOException e)
         {
-            _server.Disconnect(this);
+            _server.Disconnect(this, _socket.getPort());
+        }
+    }
+
+    void CloseStreams()
+    {
+        try
+        {
+            _outputStream.close();
+            _inputStream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -65,6 +78,7 @@ public class ClientConnection implements Runnable
 
             } catch (Exception e)
             {
+                _server.Disconnect(this, _socket.getPort());
                 e.printStackTrace();
                 break;
             }

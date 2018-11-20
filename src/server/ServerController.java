@@ -1,12 +1,12 @@
 package server;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import shared.DialogManager;
 import shared.IPortValidator;
 import shared.PortValidator;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -23,7 +23,6 @@ public class ServerController
     public ServerController()
     {
         _portNumberValidator = new PortValidator();
-
     }
 
     public void startButtonClicked() throws IOException
@@ -64,5 +63,14 @@ public class ServerController
             startButton.setDisable(false);
             stopButton.setDisable(true);
         }
+    }
+    @FXML
+    protected void initialize()
+    {
+        Platform.runLater(() ->
+        {
+            portNumberText.setText("4441");
+            portNumberText.requestFocus();
+        });
     }
 }

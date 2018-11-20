@@ -57,15 +57,26 @@ public class JavaCommunicatorServer implements IJavaCommunicatorServer
 
 
     @Override
-    public void Disconnect(ClientConnection clientConnection)
+    public void Disconnect(ClientConnection clientConnection, int port)
     {
         get_connectedClients().remove(clientConnection);
+        RemoveClient(port);
     }
 
     @Override
     public void AddClientId(int localPort, String name)
     {
         _clientNames.put(localPort, name);
+        for (ClientConnection singleClient: get_connectedClients())
+        {
+            var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);
+            singleClient.Send(contactsUpdatedMessage);
+        }
+    }
+
+    public void RemoveClient(int localPort)
+    {
+        _clientNames.remove(localPort);
         for (ClientConnection singleClient: get_connectedClients())
         {
             var contactsUpdatedMessage = new ContactsListUpdatedMessage(_clientNames);

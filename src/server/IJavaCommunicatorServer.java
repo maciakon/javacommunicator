@@ -11,7 +11,7 @@ public interface IJavaCommunicatorServer
 
     void Handle(int localPort, IMessage packet);
 
-    void Disconnect(ClientConnection clientConnection);
+    void Disconnect(ClientConnection clientConnection, int port);
 
     void AddClientId(int clientId, String name);
 
