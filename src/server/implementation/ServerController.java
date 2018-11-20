@@ -26,6 +26,12 @@ public class ServerController
         _portNumberValidator = new PortValidator();
     }
 
+    /**
+     * Handles start button click.
+     * Set enabled/disabled controls state.
+     * Starts the server.
+     * @throws IOException
+     */
     public void startButtonClicked() throws IOException
     {
         var portNumber = _portNumberValidator.GetPortNumberFromString(portNumberText.getText());
@@ -37,10 +43,13 @@ public class ServerController
         }
         else
         {
-            DialogManager.ShowError("Invalid port number");
+            DialogManager.ShowError("Invalid port number.");
         }
     }
 
+    /**
+     * Stops server. Changes controls state to editable.
+     */
     public void stopButtonClicked()
     {
         SetControlsState(false);

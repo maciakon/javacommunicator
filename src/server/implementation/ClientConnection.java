@@ -6,6 +6,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Serves a single client on JavaCommunicator server side.
+ * Each of the instances of this class gets its own socket (port) from server socket.
+ * Each of the instances of this class works in a separate thread.
+ * The thread blocks until a message has been received on the input stream.
+ */
 public class ClientConnection implements Runnable
 {
     private final Socket _socket;
@@ -19,6 +25,10 @@ public class ClientConnection implements Runnable
         _server = javaCommunicatorServer;
     }
 
+    /**
+     * Starts receiving thread.
+     * The thread blocks until a message has been received.
+     */
     @Override
     public void run()
     {
@@ -51,11 +61,16 @@ public class ClientConnection implements Runnable
         }
     }
 
-    public void Send(IMessage packet)
+    /**
+     * Sends a {@link IMessage} instance through a {@link ObjectOutputStream} to the client.
+     * The output stream is flushed and reset after each message to provide correct message sending for objects like HashMap.
+     * @param message A message to send.
+     */
+    public void Send(IMessage message)
     {
         try
         {
-            _outputStream.writeObject(packet);
+            _outputStream.writeObject(message);
             _outputStream.flush();
             _outputStream.reset();
         }
@@ -65,6 +80,12 @@ public class ClientConnection implements Runnable
         }
     }
 
+    /**
+     * Internal receiving messages thread method.
+     * Gets an {@link IMessage} instance from input stream.
+     * Sets sender for further processing.
+     * The message is handled by {@link server.interfaces.IJavaCommunicatorServer} instance.
+     */
     private void Receive()
     {
         while(!Thread.interrupted())
@@ -74,8 +95,8 @@ public class ClientConnection implements Runnable
                 var message = (IMessage) _inputStream.readObject();
                 message.SetSender(_socket.getPort());
                 _server.Handle(_socket.getPort(), message);
-
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _server.Disconnect(this, _socket.getPort());
                 e.printStackTrace();
@@ -84,6 +105,10 @@ public class ClientConnection implements Runnable
         }
     }
 
+    /**
+     * Gets client socket (port).
+     * @return port
+     */
     public int get_Id()
     {
         return _socket.getPort();
