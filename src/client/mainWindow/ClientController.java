@@ -12,6 +12,11 @@ import shared.implementation.messages.PoisonedPillMessage;
 
 import java.io.IOException;
 
+/**
+ * Contains logic for conversation purposes.
+ * <p>The conversation view consists of a contact list and a tab container, </p>
+ * <p<Each conversation has its own tab assigned./p>
+ */
 public class ClientController
 {
     private JavaCommunicatorClient _javaCommunicatorClient;
@@ -25,6 +30,11 @@ public class ClientController
     private static final  int _portNumber = 4441;
     private static final String _host = "localhost";
 
+    /**
+     * Sets login and starts {@link JavaCommunicatorClient} that connects to the server.
+     * <p>After a connection has been established, a new thread is spawn to actively wait for incoming messages, </p>
+     * @param login passed to the {@link JavaCommunicatorClient}.
+     */
     public void setLogin(String login)
     {
         _javaCommunicatorClient = new JavaCommunicatorClient(_host, _portNumber, login);
@@ -33,6 +43,12 @@ public class ClientController
         _readingThread.start();
     }
 
+    /**
+     * Called when a user double clicks a contacts list.
+     * <p>Opens a new conversation tab and assigns it an index from the contacts list.
+     * That is needed because there may be contacts with the same name displayed on the list and application needs to distinguish them.</p>
+     * @param mouseEvent used for checking if user double clicked an contact list item.
+     */
     public void ListViewMouseClicked(MouseEvent mouseEvent)
     {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY))
@@ -45,6 +61,10 @@ public class ClientController
         }
     }
 
+    /**
+     * Add new tab to the conversation tab pane, Each tab is assigned with its own controller.
+     * @param contactIndex distinguish between contacts with the same name in the contact list.
+     */
     public void AddTab(int contactIndex)
     {
         var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
@@ -62,6 +82,13 @@ public class ClientController
         }
     }
 
+    /**
+     * Receiving messages thread method.
+     * Actively waits for an incoming message.
+     * Because it gets items from a blocking queue, it is needed to pass it a {@link PoisonedPillMessage} to interrupt waiting.
+     * <p> Whenever a message it taken from the queue, it is passed to {@link ClientHandlerFactory} to get appropriate handler.
+     * That allows encapsulation of message handling logic inside of a specific handler for a message type.</p>
+     */
     @SuppressWarnings("unchecked")
     private void ProcessReceivedMessages()
     {
