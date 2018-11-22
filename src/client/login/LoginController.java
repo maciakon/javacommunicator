@@ -32,7 +32,8 @@ public class LoginController
      */
     public void ConnectToServer(ActionEvent actionEvent) throws Exception
     {
-        var fxmlLoader = new FXMLLoader(getClass().getResource("../mainWindow/client.fxml"));
+        var fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/client.fxml"));
         Parent root = fxmlLoader.load();
         _clientController = fxmlLoader.getController();
         _clientController.setLogin(_loginTextField.getText());

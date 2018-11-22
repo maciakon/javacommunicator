@@ -17,6 +17,11 @@ class TabControllerFactory implements Callback<Class<?>, Object>
         _contactIndex = contactIndex;
     }
 
+    /**
+     * Creates new tab controller.
+     * @param cls
+     * @return instance of the tab controller.
+     */
     @Override
     public Object call(Class<?> cls)
     {

@@ -67,7 +67,8 @@ public class ClientController
      */
     public void AddTab(int contactIndex)
     {
-        var fxmlLoader = new FXMLLoader(getClass().getResource("tab.fxml"));
+        var fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/tab.fxml"));
         var tabControllerFactory = new TabControllerFactory(_javaCommunicatorClient, contactIndex);
         fxmlLoader.setControllerFactory(tabControllerFactory);
 
