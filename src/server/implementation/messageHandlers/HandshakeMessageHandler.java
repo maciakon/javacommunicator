@@ -20,7 +20,7 @@ public class HandshakeMessageHandler implements IHandle<HandShakeMessage>
     /**
      * Schedules handling to the server.
      * Server adds the client to the list and informs other clients.
-     * @param message
+     * @param message a message to be handled
      */
     @Override
     public void Handle(HandShakeMessage message)

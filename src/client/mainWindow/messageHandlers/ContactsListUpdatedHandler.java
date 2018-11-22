@@ -11,17 +11,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Handles {@link ContactsListUpdatedMessage}
+ */
 public class ContactsListUpdatedHandler implements IHandle<ContactsListUpdatedMessage>
 {
     private final ListView _contactsList;
     private final JavaCommunicatorClient _client;
 
+    /**
+     * Creates the handler.
+     * @param contactsList a contacts list
+     * @param client client engine
+     */
     public ContactsListUpdatedHandler(ListView contactsList, JavaCommunicatorClient client)
     {
         _contactsList = contactsList;
         _client = client;
     }
 
+    /**
+     * Gets a list of connected clients from the message.
+     * Produces a map of a contact's index to port-name pair that is useful when assigning received messages to specific
+     * contact's tab (because contacts may have the same name),
+     * @param message a message to be handled.
+     */
     @Override
     public void Handle(ContactsListUpdatedMessage message)
     {

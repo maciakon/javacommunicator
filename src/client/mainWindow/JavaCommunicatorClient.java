@@ -15,6 +15,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * This is the client's engine taking care of communication with the server. Two threads take part in this process,
+ * One thread processes sending messages while the other processes receiving.
+ * Messages are sent and received through appropriate {@link ObjectInputStream} and {@link ObjectOutputStream} objects,
+ * <p>
+ *     Received messages are added to a {@link BlockingQueue} which allows a receiving thread to block while waiting for messages to arrive.
+ *     Messages to sent are added to a thread safe {@link CopyOnWriteArrayList}.
+ *     Sending thread checks on whether is there any message to send on the list and sends it when one is found.
+ * </p>
+ */
 public class JavaCommunicatorClient
 {
     private ObjectInputStream _objectInputStream;
@@ -30,6 +40,12 @@ public class JavaCommunicatorClient
     private final HashMap<Integer, TabController> conversationTabsControllers = new HashMap<>();
 
 
+    /**
+     * Creates the object,
+     * @param host a server address
+     * @param portNumber a server port number
+     * @param login logged user name
+     */
     public JavaCommunicatorClient(String host, int portNumber, String login)
     {
         _login = login;
@@ -47,6 +63,9 @@ public class JavaCommunicatorClient
         }
     }
 
+    /**
+     * Starts both sending and receiving threads.
+     */
     void Start()
     {
         _sendingThread = new Thread(this::SendingLoop);
@@ -56,6 +75,9 @@ public class JavaCommunicatorClient
         _sendingThread.start();
     }
 
+    /**
+     * Gracefully disconnects from a server,
+     */
     public void Stop()
     {
         if(_sendingThread != null)
@@ -75,11 +97,20 @@ public class JavaCommunicatorClient
         }
     }
 
+    /**
+     * Sens a message to the server.
+     * @param message message to send
+     */
     public void Send(IMessage message)
     {
         _messagesToSend.add(message);
     }
 
+    /**
+     * This method is accessed from a thread external to this class.
+     * Internal receiving thread adds messages to the collection.
+     * @return a received message,
+     */
     public IMessage Receive()
     {
             try
@@ -165,15 +196,27 @@ public class JavaCommunicatorClient
         _contacts = contacts;
     }
 
+    /**
+     * Gets a map of contacts that is an index on the contact list mapped to the port and name of a contact.
+     * @return the map
+     */
     public HashMap<Integer, Map.Entry<Integer,String>> getContacts()
     {
         return _contacts;
     }
 
+    /**
+     * As each and every conversation tab has its own controller, this method returns a collection of them.
+     * @return collection of tab controllers
+     */
     public HashMap<Integer, TabController> getConversationTabsControllers()
     {
         return conversationTabsControllers;
     }
 
+    /**
+     * Gets a logged user name.
+     * @return login
+     */
     public String GetLogin() { return _login; }
 }

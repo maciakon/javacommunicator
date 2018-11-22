@@ -8,5 +8,9 @@ import shared.interfaces.messages.IMessage;
  */
 public interface IHandle<T extends IMessage>
 {
+    /**
+     * Handles generic message.
+     * @param message a message to be handled.
+     */
     void Handle(T message);
 }

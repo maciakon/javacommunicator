@@ -62,7 +62,7 @@ public class ClientController
     }
 
     /**
-     * Add new tab to the conversation tab pane, Each tab is assigned with its own controller.
+     * Adds new tab to the conversation tab pane, Each tab is assigned with its own controller.
      * @param contactIndex distinguish between contacts with the same name in the contact list.
      */
     public void AddTab(int contactIndex)
@@ -86,7 +86,7 @@ public class ClientController
      * Receiving messages thread method.
      * Actively waits for an incoming message.
      * Because it gets items from a blocking queue, it is needed to pass it a {@link PoisonedPillMessage} to interrupt waiting.
-     * <p> Whenever a message it taken from the queue, it is passed to {@link ClientHandlerFactory} to get appropriate handler.
+     * <p> Whenever a message is taken from the queue, it is passed to {@link ClientHandlerFactory} to get appropriate handler.
      * That allows encapsulation of message handling logic inside of a specific handler for a message type.</p>
      */
     @SuppressWarnings("unchecked")

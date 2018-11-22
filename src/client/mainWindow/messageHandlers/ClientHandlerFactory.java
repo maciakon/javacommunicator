@@ -13,6 +13,10 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Responsible for creating client message handlers.
+ * All of the message handlers have to be registered here.
+ */
 public class ClientHandlerFactory implements IHandlerFactory
 {
     private final Map<Type, IHandle> _handlers = new HashMap<>();
@@ -20,6 +24,12 @@ public class ClientHandlerFactory implements IHandlerFactory
     private final ClientController _clientController;
     private final JavaCommunicatorClient _client;
 
+    /**
+     * Creates the factory,
+     * @param contactsList current contacts list
+     * @param clientController client controller
+     * @param client client engine
+     */
     public ClientHandlerFactory(ListView contactsList, ClientController clientController, JavaCommunicatorClient client)
     {
         _contactsList = contactsList;
@@ -34,6 +44,11 @@ public class ClientHandlerFactory implements IHandlerFactory
         _handlers.put(TextMessage.class, new TextMessageHandler(_clientController, _client));
     }
 
+    /**
+     * Returns appropriate message handler for a message type.
+     * @param message {@link IMessage} instance
+     * @return a message handler
+     */
     @Override
     public IHandle Get(IMessage message)
     {

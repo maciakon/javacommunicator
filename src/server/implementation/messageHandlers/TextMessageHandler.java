@@ -27,7 +27,7 @@ public class TextMessageHandler implements IHandle<TextMessage>
      *         Send (route) message to all of the server clients with the recipient id.
      *     </li>
      * </ul>
-     * @param message
+     * @param message text message to handle
      */
     @Override
     public void Handle(TextMessage message)

@@ -2,6 +2,10 @@ package client.mainWindow;
 
 import javafx.util.Callback;
 
+/**
+ * Encapsulates creating tab controllers.
+ * Allows each and every conversation tab having its own controller,
+ */
 class TabControllerFactory implements Callback<Class<?>, Object>
 {
     private final JavaCommunicatorClient client;

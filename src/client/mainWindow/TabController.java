@@ -19,6 +19,9 @@ import shared.implementation.messages.TextMessage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Encapsulates logic related to user interaction with a conversation tab.
+ */
 public class TabController
 {
     private final JavaCommunicatorClient _client;
@@ -36,6 +39,11 @@ public class TabController
     private Integer _contactId;
     private final ObservableList _messagesList;
 
+    /**
+     * Creates a tab controller,
+     * @param client {@link JavaCommunicatorClient}
+     * @param contactIndex index of a contact on the contact list
+     */
     public TabController(JavaCommunicatorClient client, int contactIndex)
     {
         _client = client;
@@ -44,6 +52,10 @@ public class TabController
         _dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     }
 
+    /**
+     * Called when a user press Send button or Enter key.
+     * @param actionEvent not used
+     */
     public void SendMessageAction(ActionEvent actionEvent)
     {
         var textToSend = sendMessageTextField.getText();
@@ -57,6 +69,11 @@ public class TabController
         }
     }
 
+    /**
+     * Appends received message to a current conversation.
+     * @param message message to append
+     * @param login a message sender's user name
+     */
     public void AppendMessage(TextMessage message, String login)
     {
         var receivedDate = LocalDateTime.now().format(_dateTimeFormatter);
@@ -81,11 +98,21 @@ public class TabController
         messagesArea.setItems(_messagesList);
     }
 
+    /**
+     * Cleans up on tab closing event.
+     * Removes the tab from conversation tab controllers collection.
+     * @param event not used
+     */
     public void OnClosing(Event event)
     {
         _client.getConversationTabsControllers().remove(_contactId);
     }
 
+    /**
+     * Adds this tab to the tab controllers collection.
+     * Sets focus on the message text box.
+     * Sets the title of the tab that is a responder's name.
+     */
     @FXML
     protected void initialize()
     {
